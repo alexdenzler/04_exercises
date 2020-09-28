@@ -304,19 +304,81 @@ ggmap(world) +
 minn <- get_stamenmap(
     bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
     maptype = "terrain",
-    zoom = 2)
+    zoom = 10)
+```
 
-# Plot the points on the map
-ggmap(world) + # creates the map "background"
+```
+## Source : http://tile.stamen.com/terrain/10/244/367.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/245/367.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/246/367.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/247/367.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/248/367.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/244/368.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/245/368.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/246/368.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/247/368.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/248/368.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/244/369.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/245/369.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/246/369.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/247/369.png
+```
+
+```
+## Source : http://tile.stamen.com/terrain/10/248/369.png
+```
+
+```r
+ggmap(minn) + 
   geom_point(data = Starbucks, 
-             aes(x = Longitude, y = Latitude), 
+             aes(x = Longitude, y = Latitude), color = "red", 
              alpha = .3, 
-             size = .1) +
-  theme_map()
+             size = 1) +
+  theme_map() + 
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_point).
+## Warning: Removed 25447 rows containing missing values (geom_point).
 ```
 
 ![](04_exercises_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
@@ -324,11 +386,509 @@ ggmap(world) + # creates the map "background"
 
   3. In the Twin Cities plot, play with the zoom number. What does it do?  (just describe what it does - don't actually include more than one map).  
   
-  - 
+  - As the number for zoom rises, more detail is added to the map in terms of labels and borders. 
 
   4. Try a couple different map types (see `get_stamenmap()` in help and look at `maptype`). Include a map with one of the other map types.  
+  
+
+```r
+minn <- get_stamenmap(
+    bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
+    maptype = "watercolor",
+    zoom = 10)
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/244/367.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/245/367.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/246/367.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/247/367.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/248/367.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/244/368.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/245/368.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/246/368.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/247/368.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/248/368.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/244/369.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/245/369.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/246/369.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/247/369.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/10/248/369.jpg
+```
+
+```r
+ggmap(minn) + 
+  geom_point(data = Starbucks, 
+             aes(x = Longitude, y = Latitude), 
+             alpha = .7, 
+             size = 1) +
+  theme_map() + 
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
+```
+
+```
+## Warning: Removed 25447 rows containing missing values (geom_point).
+```
+
+![](04_exercises_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+  
 
   5. Add a point to the map that indicates Macalester College and label it appropriately. There are many ways you can do think, but I think it's easiest with the `annotate()` function (see `ggplot2` cheatsheet).
+  
+
+```r
+minn <- get_stamenmap(
+    bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
+    maptype = "terrain",
+    zoom = 10)
+
+ggmap(minn) + 
+  geom_point(data = Starbucks, 
+             aes(x = Longitude, y = Latitude), color = "red", 
+             alpha = .5, 
+             size = 1) +
+  annotate("text", x = -93.17, y = 44.94, label = "Macalester College", color = "darkblue")
+```
+
+```
+## Warning: Removed 25447 rows containing missing values (geom_point).
+```
+
+![](04_exercises_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+```r
+  theme_map() +
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
+```
+
+```
+## List of 93
+##  $ line                      :List of 6
+##   ..$ colour       : chr "black"
+##   ..$ size         : num 0.409
+##   ..$ linetype     : num 1
+##   ..$ lineend      : chr "butt"
+##   ..$ arrow        : logi FALSE
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_line" "element"
+##  $ rect                      :List of 5
+##   ..$ fill         : chr "white"
+##   ..$ colour       : chr "black"
+##   ..$ size         : num 0.409
+##   ..$ linetype     : num 1
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_rect" "element"
+##  $ text                      :List of 11
+##   ..$ family       : chr ""
+##   ..$ face         : chr "plain"
+##   ..$ colour       : chr "black"
+##   ..$ size         : num 9
+##   ..$ hjust        : num 0.5
+##   ..$ vjust        : num 0.5
+##   ..$ angle        : num 0
+##   ..$ lineheight   : num 0.9
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : logi FALSE
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ title                     : chr "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area"
+##  $ aspect.ratio              : NULL
+##  $ axis.title                : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ axis.title.x              :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 1
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 2.25points 0points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.title.x.top          :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 0
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 2.25points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.title.x.bottom       : NULL
+##  $ axis.title.y              :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 1
+##   ..$ angle        : num 90
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 2.25points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.title.y.left         : NULL
+##  $ axis.title.y.right        :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 0
+##   ..$ angle        : num -90
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 0points 2.25points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.text                 : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ axis.text.x               :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 1
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 1.8points 0points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.text.x.top           :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : num 0
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 1.8points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.text.x.bottom        : NULL
+##  $ axis.text.y               :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : num 1
+##   ..$ vjust        : NULL
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 1.8points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.text.y.left          : NULL
+##  $ axis.text.y.right         :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : num 0
+##   ..$ vjust        : NULL
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 0points 1.8points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ axis.ticks                : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ axis.ticks.x              : NULL
+##  $ axis.ticks.x.top          : NULL
+##  $ axis.ticks.x.bottom       : NULL
+##  $ axis.ticks.y              : NULL
+##  $ axis.ticks.y.left         : NULL
+##  $ axis.ticks.y.right        : NULL
+##  $ axis.ticks.length         : 'simpleUnit' num 2.25points
+##   ..- attr(*, "unit")= int 8
+##  $ axis.ticks.length.x       : NULL
+##  $ axis.ticks.length.x.top   : NULL
+##  $ axis.ticks.length.x.bottom: NULL
+##  $ axis.ticks.length.y       : NULL
+##  $ axis.ticks.length.y.left  : NULL
+##  $ axis.ticks.length.y.right : NULL
+##  $ axis.line                 : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ axis.line.x               : NULL
+##  $ axis.line.x.top           : NULL
+##  $ axis.line.x.bottom        : NULL
+##  $ axis.line.y               : NULL
+##  $ axis.line.y.left          : NULL
+##  $ axis.line.y.right         : NULL
+##  $ legend.background         :List of 5
+##   ..$ fill         : NULL
+##   ..$ colour       : logi NA
+##   ..$ size         : NULL
+##   ..$ linetype     : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_rect" "element"
+##  $ legend.margin             : 'margin' num [1:4] 4.5points 4.5points 4.5points 4.5points
+##   ..- attr(*, "unit")= int 8
+##  $ legend.spacing            : 'simpleUnit' num 9points
+##   ..- attr(*, "unit")= int 8
+##  $ legend.spacing.x          : NULL
+##  $ legend.spacing.y          : NULL
+##  $ legend.key                :List of 5
+##   ..$ fill         : chr "white"
+##   ..$ colour       : logi NA
+##   ..$ size         : NULL
+##   ..$ linetype     : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_rect" "element"
+##  $ legend.key.size           : 'simpleUnit' num 1.2lines
+##   ..- attr(*, "unit")= int 3
+##  $ legend.key.height         : NULL
+##  $ legend.key.width          : NULL
+##  $ legend.text               :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : 'rel' num 0.8
+##   ..$ hjust        : NULL
+##   ..$ vjust        : NULL
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : NULL
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ legend.text.align         : NULL
+##  $ legend.title              :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : num 0
+##   ..$ vjust        : NULL
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : NULL
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ legend.title.align        : NULL
+##  $ legend.position           : num [1:2] 0 0
+##  $ legend.direction          : NULL
+##  $ legend.justification      : num [1:2] 0 0
+##  $ legend.box                : NULL
+##  $ legend.box.just           : NULL
+##  $ legend.box.margin         : 'margin' num [1:4] 0cm 0cm 0cm 0cm
+##   ..- attr(*, "unit")= int 1
+##  $ legend.box.background     : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ legend.box.spacing        : 'simpleUnit' num 9points
+##   ..- attr(*, "unit")= int 8
+##  $ panel.background          : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ panel.border              : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ panel.spacing             : 'simpleUnit' num 0lines
+##   ..- attr(*, "unit")= int 3
+##  $ panel.spacing.x           : NULL
+##  $ panel.spacing.y           : NULL
+##  $ panel.grid                : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ panel.grid.major          : NULL
+##  $ panel.grid.minor          :List of 6
+##   ..$ colour       : NULL
+##   ..$ size         : 'rel' num 0.5
+##   ..$ linetype     : NULL
+##   ..$ lineend      : NULL
+##   ..$ arrow        : logi FALSE
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_line" "element"
+##  $ panel.grid.major.x        : NULL
+##  $ panel.grid.major.y        : NULL
+##  $ panel.grid.minor.x        : NULL
+##  $ panel.grid.minor.y        : NULL
+##  $ panel.ontop               : logi FALSE
+##  $ plot.background           : list()
+##   ..- attr(*, "class")= chr [1:2] "element_blank" "element"
+##  $ plot.title                :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : 'rel' num 1.2
+##   ..$ hjust        : num 0
+##   ..$ vjust        : num 1
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 4.5points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ plot.title.position       : chr "panel"
+##  $ plot.subtitle             :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : num 0
+##   ..$ vjust        : num 1
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 0points 0points 4.5points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ plot.caption              :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : 'rel' num 0.8
+##   ..$ hjust        : num 1
+##   ..$ vjust        : num 1
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 4.5points 0points 0points 0points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ plot.caption.position     : chr "panel"
+##  $ plot.tag                  :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : 'rel' num 1.2
+##   ..$ hjust        : num 0.5
+##   ..$ vjust        : num 0.5
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : NULL
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ plot.tag.position         : chr "topleft"
+##  $ plot.margin               : 'margin' num [1:4] 4.5points 4.5points 4.5points 4.5points
+##   ..- attr(*, "unit")= int 8
+##  $ strip.background          :List of 5
+##   ..$ fill         : chr "grey85"
+##   ..$ colour       : chr "grey20"
+##   ..$ size         : NULL
+##   ..$ linetype     : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_rect" "element"
+##  $ strip.background.x        : NULL
+##  $ strip.background.y        : NULL
+##  $ strip.placement           : chr "inside"
+##  $ strip.text                :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : chr "grey10"
+##   ..$ size         : 'rel' num 0.8
+##   ..$ hjust        : NULL
+##   ..$ vjust        : NULL
+##   ..$ angle        : NULL
+##   ..$ lineheight   : NULL
+##   ..$ margin       : 'margin' num [1:4] 3.6points 3.6points 3.6points 3.6points
+##   .. ..- attr(*, "unit")= int 8
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ strip.text.x              : NULL
+##  $ strip.text.y              :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : NULL
+##   ..$ angle        : num -90
+##   ..$ lineheight   : NULL
+##   ..$ margin       : NULL
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  $ strip.switch.pad.grid     : 'simpleUnit' num 2.25points
+##   ..- attr(*, "unit")= int 8
+##  $ strip.switch.pad.wrap     : 'simpleUnit' num 2.25points
+##   ..- attr(*, "unit")= int 8
+##  $ strip.text.y.left         :List of 11
+##   ..$ family       : NULL
+##   ..$ face         : NULL
+##   ..$ colour       : NULL
+##   ..$ size         : NULL
+##   ..$ hjust        : NULL
+##   ..$ vjust        : NULL
+##   ..$ angle        : num 90
+##   ..$ lineheight   : NULL
+##   ..$ margin       : NULL
+##   ..$ debug        : NULL
+##   ..$ inherit.blank: logi TRUE
+##   ..- attr(*, "class")= chr [1:2] "element_text" "element"
+##  - attr(*, "class")= chr [1:2] "theme" "gg"
+##  - attr(*, "complete")= logi TRUE
+##  - attr(*, "validate")= logi TRUE
+```
+  
 
 ### Choropleth maps with Starbucks data (`geom_map()`)
 
@@ -381,7 +941,7 @@ starbucks_with_2018_pop_est %>%
        caption = "Created by Alex Denzler")
 ```
 
-![](04_exercises_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](04_exercises_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
   
 
 ### A few of your favorite things (`leaflet`)
@@ -406,24 +966,27 @@ denzlerFavPlaces <- tibble(place = c("Nicholson Field", "Off-Campus House", "Ale
                      -70.658448, 2.740979, 1.125687),
        latitude = c(44.935155, 44.929067, 44.442194, 
                     44.039693, 40.775600, 37.934696,
-                    42.603580, 39.782404, 44.848093))
+                    42.603580, 39.782404, 44.848093),
+       top3 = c("no", "no", "no", "yes", "yes", "no", "yes", "no", "no"))
+
+pal <- colorFactor(c("blue", "red"),
+                     domain = c("no", "yes"))
 
 leaflet(data = denzlerFavPlaces) %>% 
-  #pal <- colorFactor(c("blue", "blue", "blue", "red", "red", "blue", "red", "blue", "blue"),
-                     #domain = place) %>%
   addProviderTiles(providers$Stamen.Watercolor) %>% 
   addCircles(lng = ~longitude, 
              lat = ~latitude, 
              label = ~place,
              weight = 10,
-             opacity = 1) %>% 
+             opacity = 1,
+             color = ~pal(top3)) %>% 
   addPolylines(lng = ~longitude, 
                lat = ~latitude, 
-               color = col2hex("darkred"))
+               color = col2hex("yellow")) 
 ```
 
-<!--html_preserve--><div id="htmlwidget-1fbbbc97ada1983ae0f8" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1fbbbc97ada1983ae0f8">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[44.935155,44.929067,44.442194,44.039693,40.7756,37.934696,42.60358,39.782404,44.848093],[-93.169963,-93.167425,-75.756931,-70.734096,-73.94535,-75.350605,-70.658448,2.740979,1.125687],10,null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":10,"opacity":1,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,["Nicholson Field","Off-Campus House","Alexandria Bay","Camp Wildwood","Home","Chincoteague","Gloucester","Mallorca","Dordogne"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addPolylines","args":[[[[{"lng":[-93.169963,-93.167425,-75.756931,-70.734096,-73.94535,-75.350605,-70.658448,2.740979,1.125687],"lat":[44.935155,44.929067,44.442194,44.039693,40.7756,37.934696,42.60358,39.782404,44.848093]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#8B0000","weight":5,"opacity":0.5,"fill":false,"fillColor":"#8B0000","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[37.934696,44.935155],"lng":[-93.169963,2.740979]}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-6ced963d96f8aba23bac" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6ced963d96f8aba23bac">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["Stamen.Watercolor",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[44.935155,44.929067,44.442194,44.039693,40.7756,37.934696,42.60358,39.782404,44.848093],[-93.169963,-93.167425,-75.756931,-70.734096,-73.94535,-75.350605,-70.658448,2.740979,1.125687],10,null,null,{"interactive":true,"className":"","stroke":true,"color":["#0000FF","#0000FF","#0000FF","#FF0000","#FF0000","#0000FF","#FF0000","#0000FF","#0000FF"],"weight":10,"opacity":1,"fill":true,"fillColor":["#0000FF","#0000FF","#0000FF","#FF0000","#FF0000","#0000FF","#FF0000","#0000FF","#0000FF"],"fillOpacity":0.2},null,null,["Nicholson Field","Off-Campus House","Alexandria Bay","Camp Wildwood","Home","Chincoteague","Gloucester","Mallorca","Dordogne"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]},{"method":"addPolylines","args":[[[[{"lng":[-93.169963,-93.167425,-75.756931,-70.734096,-73.94535,-75.350605,-70.658448,2.740979,1.125687],"lat":[44.935155,44.929067,44.442194,44.039693,40.7756,37.934696,42.60358,39.782404,44.848093]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"#FFFF00","weight":5,"opacity":0.5,"fill":false,"fillColor":"#FFFF00","fillOpacity":0.2,"smoothFactor":1,"noClip":false},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[37.934696,44.935155],"lng":[-93.169963,2.740979]}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
   
 ## Revisiting old datasets
@@ -463,10 +1026,150 @@ Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv
   9. Use the latitude and longitude variables in `Stations` to make a visualization of the total number of departures from each station in the `Trips` data. Use either color or size to show the variation in number of departures. This time, plot the points on top of a map. Use any of the mapping tools you'd like.
   
 
+```r
+tripsStations <- Trips %>% 
+  rename(name = sstation) %>% 
+  left_join(Stations, by = "name") %>% 
+  group_by(name, lat, long) %>% 
+  summarize(numDep = n())
+```
+
+```
+## `summarise()` regrouping output by 'name', 'lat' (override with `.groups` argument)
+```
+
+```r
+DC <- get_stamenmap(
+    bbox = c(left = -77.2119, bottom = 38.7817, right = -76.8377, top = 39.0021), 
+    maptype = "watercolor",
+    zoom = 12)
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1169/1565.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1170/1565.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1171/1565.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1172/1565.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1173/1565.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1169/1566.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1170/1566.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1171/1566.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1172/1566.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1173/1566.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1169/1567.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1170/1567.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1171/1567.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1172/1567.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1173/1567.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1169/1568.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1170/1568.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1171/1568.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1172/1568.jpg
+```
+
+```
+## Source : http://tile.stamen.com/watercolor/12/1173/1568.jpg
+```
+
+```r
+ggmap(DC) + 
+  geom_point(data = tripsStations, 
+             aes(x = long, y = lat, size = numDep), 
+             alpha = .65) +
+  theme_map() +
+  labs(title = "Bicycle Rentals by Station")
+```
+
+```
+## Warning: Removed 33 rows containing missing values (geom_point).
+```
+
+![](04_exercises_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
   
   10. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? Also plot this on top of a map. I think it will be more clear what the patterns are.
   
 
+```r
+tripsStationsCas <- Trips %>% 
+  rename(name = sstation) %>% 
+  filter(client ==  "Casual") %>% 
+  left_join(Stations, by = "name") %>% 
+  group_by(name, lat, long) %>% 
+  summarize(numDep = n())
+```
+
+```
+## `summarise()` regrouping output by 'name', 'lat' (override with `.groups` argument)
+```
+
+```r
+ggmap(DC) + 
+  geom_point(data = tripsStationsCas, 
+             aes(x = long, y = lat, size = numDep), 
+             alpha = .65) +
+  theme_map() +
+  labs(title = "Bicycle Rentals by Station, Casual Users")
+```
+
+```
+## Warning: Removed 33 rows containing missing values (geom_point).
+```
+
+![](04_exercises_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
   
 ### COVID-19 data
 
@@ -474,7 +1177,43 @@ The following exercises will use the COVID-19 data from the NYT.
 
   11. Create a map that colors the states by the most recent cumulative number of COVID-19 cases (remember, these data report cumulative numbers so you don't need to compute that). Describe what you see. What is the problem with this map?
   
+
+```r
+covid19Tot <- covid19 %>% 
+  group_by(state) %>% 
+  mutate(state = str_to_lower(state)) %>% 
+  summarise(totCases = max(cases))
+```
+
+```
+## `summarise()` ungrouping output (override with `.groups` argument)
+```
+
+```r
+covid19Tot %>% 
+  ggplot() +
+  geom_map(map = states_map,
+           aes(map_id = state,
+               fill = totCases)) +
+  expand_limits(x = states_map$long, y = states_map$lat) + 
+  theme_map() + 
+  labs(title = "Covid Cases by State", fill = "Cumulative Cases")
+```
+
+![](04_exercises_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+  
+  - The main issue with this map is that it is difficult to see the difference between the states with the lower amount of cases, largely because the states with the most cases have so many more cases than the other states. 
+  
   12. Now add the population of each state to the dataset and color the states by most recent cumulative cases/10,000 people. See the code for doing this with the Starbucks data. You will need to make some modifications. 
+  
+
+```r
+covid19Tot <- covid19Tot %>% 
+  left_join(census_pop_est_2018,
+            by = "state") %>% 
+  mutate(casesPer10000 = (totCases/est_pop_2018)*10000) 
+```
+  
   
   13. **CHALLENGE** Choose 4 dates spread over the time period of the data and create the same map as in exercise 12 for each of the dates. Display the four graphs together using faceting. What do you notice?
   

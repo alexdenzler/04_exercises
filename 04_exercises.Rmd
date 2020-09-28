@@ -120,25 +120,58 @@ ggmap(world) +
 minn <- get_stamenmap(
     bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
     maptype = "terrain",
-    zoom = 2)
+    zoom = 10)
 
-# Plot the points on the map
-ggmap(world) + # creates the map "background"
+ggmap(minn) + 
   geom_point(data = Starbucks, 
-             aes(x = Longitude, y = Latitude), 
+             aes(x = Longitude, y = Latitude), color = "red", 
              alpha = .3, 
-             size = .1) +
-  theme_map()
+             size = 1) +
+  theme_map() + 
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
 ```
   
 
   3. In the Twin Cities plot, play with the zoom number. What does it do?  (just describe what it does - don't actually include more than one map).  
   
-  - 
+  - As the number for zoom rises, more detail is added to the map in terms of labels and borders. 
 
   4. Try a couple different map types (see `get_stamenmap()` in help and look at `maptype`). Include a map with one of the other map types.  
+  
+```{r}
+minn <- get_stamenmap(
+    bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
+    maptype = "watercolor",
+    zoom = 10)
+
+ggmap(minn) + 
+  geom_point(data = Starbucks, 
+             aes(x = Longitude, y = Latitude), 
+             alpha = .7, 
+             size = 1) +
+  theme_map() + 
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
+```
+  
 
   5. Add a point to the map that indicates Macalester College and label it appropriately. There are many ways you can do think, but I think it's easiest with the `annotate()` function (see `ggplot2` cheatsheet).
+  
+```{r}
+minn <- get_stamenmap(
+    bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
+    maptype = "terrain",
+    zoom = 10)
+
+ggmap(minn) + 
+  geom_point(data = Starbucks, 
+             aes(x = Longitude, y = Latitude), color = "red", 
+             alpha = .5, 
+             size = 1) +
+  annotate("text", x = -93.17, y = 44.94, label = "Macalester College", color = "darkblue")
+  theme_map() +
+  labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
+```
+  
 
 ### Choropleth maps with Starbucks data (`geom_map()`)
 
@@ -177,7 +210,6 @@ starbucks_with_2018_pop_est %>%
   theme_map() +
   labs(title = "Starbucks per 10,000 People with Location of each Starbucks, United States",
        caption = "Created by Alex Denzler")
-
 ```
   
 
@@ -202,20 +234,23 @@ denzlerFavPlaces <- tibble(place = c("Nicholson Field", "Off-Campus House", "Ale
                      -70.658448, 2.740979, 1.125687),
        latitude = c(44.935155, 44.929067, 44.442194, 
                     44.039693, 40.775600, 37.934696,
-                    42.603580, 39.782404, 44.848093))
+                    42.603580, 39.782404, 44.848093),
+       top3 = c("no", "no", "no", "yes", "yes", "no", "yes", "no", "no"))
+
+pal <- colorFactor(c("blue", "red"),
+                     domain = c("no", "yes"))
 
 leaflet(data = denzlerFavPlaces) %>% 
-  #pal <- colorFactor(c("blue", "blue", "blue", "red", "red", "blue", "red", "blue", "blue"),
-                     #domain = place) %>%
   addProviderTiles(providers$Stamen.Watercolor) %>% 
   addCircles(lng = ~longitude, 
              lat = ~latitude, 
              label = ~place,
              weight = 10,
-             opacity = 1) %>% 
+             opacity = 1,
+             color = ~pal(top3)) %>% 
   addPolylines(lng = ~longitude, 
                lat = ~latitude, 
-               color = col2hex("darkred"))
+               color = col2hex("yellow")) 
 ```
 
   
@@ -244,13 +279,41 @@ Stations<-read_csv("http://www.macalester.edu/~dshuman1/data/112/DC-Stations.csv
   9. Use the latitude and longitude variables in `Stations` to make a visualization of the total number of departures from each station in the `Trips` data. Use either color or size to show the variation in number of departures. This time, plot the points on top of a map. Use any of the mapping tools you'd like.
   
 ```{r}
+tripsStations <- Trips %>% 
+  rename(name = sstation) %>% 
+  left_join(Stations, by = "name") %>% 
+  group_by(name, lat, long) %>% 
+  summarize(numDep = n())
 
+DC <- get_stamenmap(
+    bbox = c(left = -77.2119, bottom = 38.7817, right = -76.8377, top = 39.0021), 
+    maptype = "watercolor",
+    zoom = 12)
+
+ggmap(DC) + 
+  geom_point(data = tripsStations, 
+             aes(x = long, y = lat, size = numDep), 
+             alpha = .65) +
+  theme_map() +
+  labs(title = "Bicycle Rentals by Station")
 ```
   
   10. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? Also plot this on top of a map. I think it will be more clear what the patterns are.
   
 ```{r}
+tripsStationsCas <- Trips %>% 
+  rename(name = sstation) %>% 
+  filter(client ==  "Casual") %>% 
+  left_join(Stations, by = "name") %>% 
+  group_by(name, lat, long) %>% 
+  summarize(numDep = n())
 
+ggmap(DC) + 
+  geom_point(data = tripsStationsCas, 
+             aes(x = long, y = lat, size = numDep), 
+             alpha = .65) +
+  theme_map() +
+  labs(title = "Bicycle Rentals by Station, Casual Users")
 ```
   
 ### COVID-19 data
@@ -259,7 +322,33 @@ The following exercises will use the COVID-19 data from the NYT.
 
   11. Create a map that colors the states by the most recent cumulative number of COVID-19 cases (remember, these data report cumulative numbers so you don't need to compute that). Describe what you see. What is the problem with this map?
   
+```{r}
+covid19Tot <- covid19 %>% 
+  group_by(state) %>% 
+  mutate(state = str_to_lower(state)) %>% 
+  summarise(totCases = max(cases))
+  
+covid19Tot %>% 
+  ggplot() +
+  geom_map(map = states_map,
+           aes(map_id = state,
+               fill = totCases)) +
+  expand_limits(x = states_map$long, y = states_map$lat) + 
+  theme_map() + 
+  labs(title = "Covid Cases by State", fill = "Cumulative Cases")
+```
+  
+  - The main issue with this map is that it is difficult to see the difference between the states with the lower amount of cases, largely because the states with the most cases have so many more cases than the other states. 
+  
   12. Now add the population of each state to the dataset and color the states by most recent cumulative cases/10,000 people. See the code for doing this with the Starbucks data. You will need to make some modifications. 
+  
+```{r}
+covid19Tot <- covid19Tot %>% 
+  left_join(census_pop_est_2018,
+            by = "state") %>% 
+  mutate(casesPer10000 = (totCases/est_pop_2018)*10000) 
+```
+  
   
   13. **CHALLENGE** Choose 4 dates spread over the time period of the data and create the same map as in exercise 12 for each of the dates. Display the four graphs together using faceting. What do you notice?
   
