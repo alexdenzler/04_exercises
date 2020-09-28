@@ -167,7 +167,8 @@ ggmap(minn) +
              aes(x = Longitude, y = Latitude), color = "red", 
              alpha = .5, 
              size = 1) +
-  annotate("text", x = -93.17, y = 44.94, label = "Macalester College", color = "darkblue")
+  annotate("point", x = -93.17, y = 44.94, color = "darkblue", size = 2) +
+  annotate("text", x = -93.17, y = 44.928, label = "Macalester College", color = "darkblue")
   theme_map() +
   labs(title = "Starbucks Locations in the Greater Minneapolis-Saint Paul Metro Area")
 ```
@@ -347,22 +348,61 @@ covid19Tot <- covid19Tot %>%
   left_join(census_pop_est_2018,
             by = "state") %>% 
   mutate(casesPer10000 = (totCases/est_pop_2018)*10000) 
+
+covid19Tot
 ```
   
   
   13. **CHALLENGE** Choose 4 dates spread over the time period of the data and create the same map as in exercise 12 for each of the dates. Display the four graphs together using faceting. What do you notice?
   
+```{r}
+covid19TotDate <- covid19 %>% 
+  group_by(state, date) %>% 
+  mutate(state = str_to_lower(state)) %>% 
+  left_join(census_pop_est_2018,
+            by = "state") %>% 
+  mutate(casesPer10000 = (cases/est_pop_2018)*10000) 
+
+covid19TotDate
+```
+  
+  
 ## Minneapolis police stops
 
 These exercises use the datasets `MplsStops` and `MplsDemo` from the `carData` library. Search for them in Help to find out more information.
 
-  14. Use the `MplsStops` dataset to find out how many stops there were for each neighborhood and the proportion of stops that were for a suspicious vehicle or person. Sort the results from most to least number of stops. Save this as a dataset called `mpls_suspicious` and display the table.  
+  14. Use the `MplsStops` dataset to find out how many stops there were for each neighborhood and the proportion of stops that were for a suspicious vehicle or person. Sort the results from most to least number of stops. Save this as a dataset called `mpls_suspicious` and display the table. 
+  
+```{r}
+mpls_suspicious <- MplsStops %>% 
+  group_by(neighborhood) %>% 
+  summarize(numStops = cumsum(n()), propSus = mean(problem == "suspicious"))
+
+mpls_suspicious
+```
+  
   
   15. Use a `leaflet` map and the `MplsStops` dataset to display each of the stops on a map as a small point. Color the points differently depending on whether they were for suspicious vehicle/person or a traffic stop (the `problem` variable). HINTS: use `addCircleMarkers`, set `stroke = FAlSE`, use `colorFactor()` to create a palette.  
   
+```{r}
+pal2 <- colorFactor(c("darkblue", "darkred"),
+                    domain = c("suspicious", "traffic"))
+
+MplsStops %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$Stamen.Terrain) %>% 
+  addCircles(lng = ~long, 
+             lat = ~lat, 
+             label = ~idNum,
+             weight = .7,
+             opacity = 1,
+             color = ~pal2(problem))
+```
+  
+  
   16. Save the folder from moodle called Minneapolis_Neighborhoods into your project/repository folder for this assignment. Make sure the folder is called Minneapolis_Neighborhoods. Use the code below to read in the data and make sure to **delete the `eval=FALSE`**. Although it looks like it only links to the .sph file, you need the entire folder of files to create the `mpls_nbhd` data set. These data contain information about the geometries of the Minneapolis neighborhoods. Using the `mpls_nbhd` dataset as the base file, join the `mpls_suspicious` and `MplsDemo` datasets to it by neighborhood (careful, they are named different things in the different files). Call this new dataset `mpls_all`.
 
-```{r, eval=FALSE}
+```{r, eval = FALSE}
 mpls_nbhd <- st_read("Minneapolis_Neighborhoods/Minneapolis_Neighborhoods.shp", quiet = TRUE)
 ```
 
