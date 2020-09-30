@@ -156,7 +156,7 @@ ggmap(minn) +
 
   5. Add a point to the map that indicates Macalester College and label it appropriately. There are many ways you can do think, but I think it's easiest with the `annotate()` function (see `ggplot2` cheatsheet).
   
-```{r}
+```{r, message=FALSE}
 minn <- get_stamenmap(
     bbox = c(left = -94.0059, bottom = 44.6696, right = -92.5090, top = 45.3338), 
     maptype = "terrain",
@@ -362,14 +362,27 @@ covid19Tot
   
 ```{r}
 covid19TotDate <- covid19 %>% 
-  group_by(state, date) %>% 
+  filter(date %in% c(mdy("03/01/2020"), mdy("05/01/2020"), mdy("07/01/2020"), mdy("09/01/2020"))) %>% 
+  group_by(state) %>% 
   mutate(state = str_to_lower(state)) %>% 
   left_join(census_pop_est_2018,
             by = "state") %>% 
   mutate(casesPer10000 = (cases/est_pop_2018)*10000) 
 
-covid19TotDate
+covid19TotDate %>% 
+  ggplot() +
+  geom_map(map = states_map,
+           aes(map_id = state,
+               fill = casesPer10000)) +
+  expand_limits(x = states_map$long, y = states_map$lat) + 
+  theme(legend.position = "right") +
+  theme_map() + 
+  facet_wrap(~date) +
+  labs(title = "Covid Cases per 10,000 People by State", fill = "Cumulative Cases per 10,000 People")
 ```
+
+
+  - By looking at the cases every two months, we are able to see how the cumulative cases per 10,000 people throughout the country progressed every two months. We can see that in March, only a few states had reported cases at all. By May, New York had significantly more cases per 10,000 people than any other state.
   
   
 ## Minneapolis police stops
