@@ -12,7 +12,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-#knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(echo = TRUE, error=TRUE, message=FALSE, warning=FALSE)
 ```
 
 ```{r libraries}
@@ -296,7 +296,8 @@ ggmap(DC) +
              aes(x = long, y = lat, size = numDep), 
              alpha = .65) +
   theme_map() +
-  labs(title = "Bicycle Rentals by Station")
+  labs(title = "Bicycle Rentals by Station",
+       size = "Number of Departures")
 ```
   
   10. Only 14.4% of the trips in our data are carried out by casual users. Create a plot that shows which area(s) have stations with a much higher percentage of departures by casual users. What patterns do you notice? Also plot this on top of a map. I think it will be more clear what the patterns are.
@@ -314,8 +315,12 @@ ggmap(DC) +
              aes(x = long, y = lat, size = numDep), 
              alpha = .65) +
   theme_map() +
-  labs(title = "Bicycle Rentals by Station, Casual Users")
+  labs(title = "Bicycle Rentals by Station, Casual Users",
+       size = "Number of Departures")
 ```
+  
+  - There is a much lower concentration of departures in the middle of DC, however the departures on the outer parts of DC seem to remain the same. This shows that the majority of registered users probably live within the middle of DC, while the casual users live on the outer parts.
+  
   
 ### COVID-19 data
 
@@ -376,7 +381,8 @@ These exercises use the datasets `MplsStops` and `MplsDemo` from the `carData` l
 ```{r}
 mpls_suspicious <- MplsStops %>% 
   group_by(neighborhood) %>% 
-  summarize(numStops = cumsum(n()), propSus = mean(problem == "suspicious"))
+  summarize(numStops = cumsum(n()), propSus = mean(problem == "suspicious")) %>% 
+  arrange(desc(numStops))
 
 mpls_suspicious
 ```
@@ -402,13 +408,60 @@ MplsStops %>%
   
   16. Save the folder from moodle called Minneapolis_Neighborhoods into your project/repository folder for this assignment. Make sure the folder is called Minneapolis_Neighborhoods. Use the code below to read in the data and make sure to **delete the `eval=FALSE`**. Although it looks like it only links to the .sph file, you need the entire folder of files to create the `mpls_nbhd` data set. These data contain information about the geometries of the Minneapolis neighborhoods. Using the `mpls_nbhd` dataset as the base file, join the `mpls_suspicious` and `MplsDemo` datasets to it by neighborhood (careful, they are named different things in the different files). Call this new dataset `mpls_all`.
 
-```{r, eval = FALSE}
+```{r}
 mpls_nbhd <- st_read("Minneapolis_Neighborhoods/Minneapolis_Neighborhoods.shp", quiet = TRUE)
 ```
 
+```{r}
+mplsDemStop <- mpls_suspicious %>% 
+  left_join(MplsDemo, by = "neighborhood")
+
+mpls_all <- mpls_nbhd %>% 
+  left_join(mplsDemStop, by = c("BDNAME" = "neighborhood")) %>% 
+  rename("neighborhood" = "BDNAME")
+
+mpls_all
+```
+
+
   17. Use `leaflet` to create a map from the `mpls_all` data  that colors the neighborhoods by `prop_suspicious`. Display the neighborhood name as you scroll over it. Describe what you observe in the map.
   
+```{r}
+pal3 <- colorNumeric("Reds",
+                    domain = mpls_all$propSus)
+
+mpls_all %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$Stamen.Terrain) %>% 
+  addPolygons(label = ~neighborhood,
+             weight = .7,
+             opacity = 1,
+             color = ~pal3(propSus))
+```
+  
+  - There is a lot more suspicious activity in the eastern part of Minneapolis than the western part, which is shown by the color covering eastern Minneapolis being darker. There are also some pockets of suspicious type crimes in the southwestern and northwestern corners of Minneapolis.
+  
   18. Use `leaflet` to create a map of your own choosing. Come up with a question you want to try to answer and use the map to help answer that question. Describe what your map shows. 
+  
+  - **Question**: What does the crime distribution among people of color look like in Minneapolis?
+  
+```{r}
+pal4 <- colorFactor(c("darkblue", "darkred"),
+                    domain = c("suspicious", "traffic"))
+
+MplsStops %>% 
+  filter(race != c("white", "unknown")) %>% 
+  leaflet() %>% 
+  addProviderTiles(providers$Stamen.Terrain) %>% 
+  addCircles(lng = ~long, 
+             lat = ~lat, 
+             label = ~idNum,
+             weight = .7,
+             opacity = 1,
+             color = ~pal4(problem))  
+```
+  
+  - When zooming in on various locations on the map, there seems to be a lot less traffic stops but a very similar number of suspicious stops.
   
   
 ## GitHub link
