@@ -375,14 +375,14 @@ covid19TotDate %>%
            aes(map_id = state,
                fill = casesPer10000)) +
   expand_limits(x = states_map$long, y = states_map$lat) + 
-  theme(legend.position = "bottom") +
   theme_map() + 
   facet_wrap(~date) +
+  theme(legend.position = "right") +
   labs(title = "Covid Cases per 10,000 People by State", fill = "Cumulative Cases/10,000 People")
 ```
 
 
-  - By looking at the cases every two months, we are able to see how the cumulative cases per 10,000 people throughout the country progressed every two months. We can see that in March, only a few states had reported cases at all. By May, New York had significantly more cases per 10,000 people than any other state.
+  - By looking at the cases every two months, we are able to see how the cumulative cases per 10,000 people throughout the country progressed every two months. We can see that in March, only a few states had reported cases at all. By May, New York had significantly more cases per 10,000 people than any other state. By July, the number of cases per 10,000 people was pretty close to uniform over the majority of the states, with the exception of New York. By September, the majority of states had over 200 cases per 10,000 people.
   
   
 ## Minneapolis police stops
